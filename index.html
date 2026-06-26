@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Argus: Metric Panoramic 3D Reconstruction for Indoor Scenes</title>
+  <meta name="description" content="Argus is a data-driven feed-forward network for metric panoramic 3D reconstruction of indoor scenes, together with Realsee3D, a large-scale indoor multi-view panoramic RGB-D dataset.">
+
+  <!-- Open Graph / social preview -->
+  <meta property="og:title" content="Argus: Metric Panoramic 3D Reconstruction for Indoor Scenes">
+  <meta property="og:description" content="A feed-forward network for metric panoramic 3D reconstruction, with the large-scale Realsee3D dataset.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="./static/images/teaser.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="./static/css/index.css">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="container">
+      <div class="venue-badge">ECCV 2026 · Under Review</div>
+      <h1 class="title"><span class="brand">Argus</span>: Metric Panoramic 3D Reconstruction<br>for Indoor Scenes</h1>
+      <p class="subtitle">A data-driven feed-forward network that reconstructs complete, consistent,
+        metric-scale indoor 3D scenes from sparse, unordered panoramic images.</p>
+
+      <div class="authors">
+        <span class="author">Xi Li<sup>1</sup></span>
+        <span class="author">Linyuan Li<sup>1</sup></span>
+        <span class="author">Yan Wu<sup>1</sup></span>
+        <span class="author">Tong Rao<sup>1</sup></span>
+        <span class="author">Kai Zhang<sup>1</sup></span>
+        <span class="author">Xinchen Hui<sup>1</sup></span>
+        <span class="author">Cihui Pan<sup>1,2</sup></span>
+      </div>
+      <div class="affiliations">
+        <sup>1</sup>Realsee &nbsp;&nbsp; <sup>2</sup>Quanzhou University of Information Engineering
+      </div>
+
+      <div class="links">
+        <a class="btn disabled" href="#" title="Coming soon"><span class="ico">&#128196;</span> Paper</a>
+        <a class="btn" href="https://github.com/realsee-developer/Argus" target="_blank" rel="noopener"><span class="ico">&#9881;</span> Code</a>
+        <a class="btn" href="https://huggingface.co/RealseeTechnology/Argus" target="_blank" rel="noopener"><span class="ico">&#129303;</span> Model</a>
+        <a class="btn" href="https://dataset.realsee.ai/" target="_blank" rel="noopener"><span class="ico">&#128202;</span> Dataset</a>
+        <a class="btn" href="#citation"><span class="ico">&#10078;</span> Citation</a>
+      </div>
+      <p class="note">The arXiv / paper link will be added upon release.</p>
+    </div>
+  </header>
+
+  <!-- ===== Teaser ===== -->
+  <section class="teaser" style="border-bottom:1px solid var(--border);">
+    <div class="container">
+      <div class="figure bare">
+        <img src="./static/images/teaser.png" alt="Argus teaser: from sparse panoramic views to a complete metric 3D indoor scene">
+        <p class="caption"><b>Argus</b> takes a sparse, unordered set of panoramic images and reconstructs a
+          complete, geometrically consistent, and metric-scale 3D indoor scene in a single feed-forward pass.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Abstract ===== -->
+  <section id="abstract">
+    <div class="container prose">
+      <h2 class="section-title">Abstract</h2>
+      <p>We introduce <b>Argus</b>, a data-driven feed-forward network for metric panoramic 3D reconstruction,
+        and <b>Realsee3D</b>, a large-scale indoor multi-view panoramic RGB-D dataset. Realsee3D features
+        10,000 scenes (1,000 LiDAR-captured real scenes and 9,000 synthetic scenes built from over 100
+        designer-curated templates), 95,962 rooms, and 299,073 viewpoints. It provides sparse unordered
+        panoramic image sets that reflect practical acquisition, in which a suboptimal reference view can
+        degrade reconstruction robustness.</p>
+      <p>Argus addresses this issue with <b>covisibility learning</b> to select a reliable reference view for
+        anchoring the metric global coordinate system. We further factorize the pixel-to-world mapping into
+        explicit geometric transforms with per-step supervision, and enforce joint constraints via composing
+        cross-coordinate-frame transforms. This approach improves geometric consistency, simplifies learning,
+        and reinforces mutual facilitation among subtasks. To evaluate these designs, we establish a panoramic
+        visual geometry benchmark on Realsee3D for camera pose estimation, depth estimation, and point cloud
+        reconstruction, where Argus achieves <b>state-of-the-art</b> results across all tasks.</p>
+    </div>
+  </section>
+
+  <!-- ===== Method ===== -->
+  <section id="method">
+    <div class="container">
+      <h2 class="section-title">Method</h2>
+      <div class="prose">
+        <p>Argus first extracts patch tokens from each panoramic view with a DINOv2 backbone. A lightweight
+          <b>Covisibility Transformer</b> predicts a global covisibility score per view and selects the
+          highest-scoring view as the reference frame, which receives a dedicated reference camera token. A deeper
+          <b>Geometry Transformer</b> then aggregates multi-view geometric features, after which several prediction
+          heads regress camera poses (from camera tokens via MLP) and dense outputs &mdash; depth and
+          cross-coordinate-frame point maps &mdash; via independent DPT heads.</p>
+        <p>The core idea is to <b>explicitly factorize</b> the bidirectional pixel-to-world transform into several
+          interpretable intermediate geometric representations, supervising each sub-step individually and enforcing
+          joint pose constraints across coordinate frames. This lowers optimization difficulty and strengthens
+          multi-task synergy. The model (~1.31B parameters) outputs native metric scale without post-hoc alignment.</p>
+      </div>
+      <div class="figure">
+        <img src="./static/images/network.png" alt="Argus network architecture">
+        <p class="caption"><b>Network overview.</b> A Covisibility Transformer selects the reference view, a
+          reference-based Geometry Transformer aggregates multi-view features, and multiple heads predict the
+          factorized geometric representations.</p>
+      </div>
+      <div class="figure">
+        <img src="./static/images/decomp.png" alt="Pixel-to-world geometric factorization">
+        <p class="caption"><b>Geometric factorization.</b> The bidirectional pixel&harr;world transform of a single
+          view is decomposed into explicit, individually supervised geometric steps.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Dataset ===== -->
+  <section id="dataset">
+    <div class="container">
+      <h2 class="section-title">Realsee3D Dataset</h2>
+      <div class="stats">
+        <div class="stat"><div class="num">10,000</div><div class="lbl">Scenes<br>(1K real + 9K synthetic)</div></div>
+        <div class="stat"><div class="num">95,962</div><div class="lbl">Rooms</div></div>
+        <div class="stat"><div class="num">299,073</div><div class="lbl">Viewpoints</div></div>
+        <div class="stat"><div class="num">100+</div><div class="lbl">Designer templates</div></div>
+      </div>
+      <div class="figure">
+        <img src="./static/images/realsee3d_overview.png" alt="Realsee3D dataset overview">
+        <p class="caption"><b>Realsee3D</b> combines LiDAR-captured real scenes with large-scale synthetic scenes,
+          providing sparse unordered panoramic image sets that reflect practical acquisition.</p>
+      </div>
+      <div class="prose" style="text-align:center; margin-top:18px;">
+        <a class="btn" href="https://dataset.realsee.ai/" target="_blank" rel="noopener"><span class="ico">&#128202;</span> Explore the Realsee3D Dataset</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Results ===== -->
+  <section id="results">
+    <div class="container">
+      <h2 class="section-title">Results</h2>
+      <div class="figure">
+        <img src="./static/images/comparison.png" alt="Qualitative comparison with prior methods">
+        <p class="caption"><b>Qualitative comparison.</b> Argus reconstructs more accurate metric geometry and
+          sharper structural boundaries than prior methods.</p>
+      </div>
+      <div class="figure">
+        <img src="./static/images/ref_vis.png" alt="Reference view selection visualization">
+        <p class="caption"><b>Covisibility learning.</b> Argus selects reference views that are more central and
+          better connected within the scene, anchoring a stable metric coordinate system.</p>
+      </div>
+      <div class="figure">
+        <img src="./static/images/vis.png" alt="Generalization visualization">
+        <p class="caption"><b>Generalization.</b> Reconstruction results on diverse indoor scenes.</p>
+      </div>
+      <div class="figure">
+        <img src="./static/images/native_comp.png" alt="Perspective vs panoramic reconstruction">
+        <p class="caption"><b>Panoramic vs. perspective.</b> The wide field of view of panoramic input yields more
+          complete scene coverage.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BibTeX ===== -->
+  <section id="citation" class="bibtex">
+    <div class="container">
+      <h2 class="section-title">Citation</h2>
+      <div class="prose">
+        <div class="copy-bar"><button class="copy-btn" id="copyBib">Copy</button></div>
+<pre id="bibText">@inproceedings{li2026argus,
+  title     = {Argus: Metric Panoramic 3D Reconstruction for Indoor Scenes},
+  author    = {Li, Xi and Li, Linyuan and Wu, Yan and Rao, Tong and
+               Zhang, Kai and Hui, Xinchen and Pan, Cihui},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+  year      = {2026}
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Realsee. Code released under the repository's
+        <a href="https://github.com/realsee-developer/Argus/blob/main/LICENSE" target="_blank" rel="noopener">LICENSE</a>.</p>
+      <p>Website template adapted from
+        <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" rel="noopener">Nerfies</a>,
+        used under a
+        <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> license.</p>
+    </div>
+  </footer>
+
+  <script src="./static/js/index.js"></script>
+</body>
+</html>
