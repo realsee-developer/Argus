@@ -14,7 +14,7 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; font-size: 17.5px; }
+html { scroll-behavior: smooth; font-size: 19px; }
 
 body {
   margin: 0;
@@ -56,7 +56,7 @@ a:hover { color: var(--accent-dark); text-decoration: underline; }
   text-transform: uppercase;
 }
 .title {
-  font-size: 2.6rem;
+  font-size: 45px;
   font-weight: 700;
   line-height: 1.18;
   margin: 0 0 6px;
@@ -234,7 +234,7 @@ footer a { color: var(--accent); }
 
 /* responsive */
 @media (max-width: 760px) {
-  .title { font-size: 1.9rem; }
+  .title { font-size: 33px; }
   .subtitle { font-size: 1.02rem; }
   body { font-size: 17px; }
   .stats { grid-template-columns: repeat(2, 1fr); }
