@@ -20,7 +20,7 @@
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="container">
-      <div class="venue-badge">ECCV 2026 · Under Review</div>
+      <div class="venue-badge">Accepted to ECCV 2026</div>
       <h1 class="title"><span class="brand">Argus</span>: Metric Panoramic 3D Reconstruction<br>for Indoor Scenes</h1>
       <p class="subtitle">A data-driven feed-forward network that reconstructs complete, consistent,
         metric-scale indoor 3D scenes from sparse, unordered panoramic images.</p>
@@ -35,7 +35,7 @@
         <span class="author">Cihui Pan<sup>1,2</sup></span>
       </div>
       <div class="affiliations">
-        <sup>1</sup>Realsee &nbsp;&nbsp; <sup>2</sup>Quanzhou University of Information Engineering
+        <sup>1</sup>Realsee, China &nbsp;&nbsp; <sup>2</sup>Quanzhou University of Information Engineering, China
       </div>
 
       <div class="links">
@@ -64,19 +64,17 @@
   <section id="abstract">
     <div class="container prose">
       <h2 class="section-title">Abstract</h2>
-      <p>We introduce <b>Argus</b>, a data-driven feed-forward network for metric panoramic 3D reconstruction,
-        and <b>Realsee3D</b>, a large-scale indoor multi-view panoramic RGB-D dataset. Realsee3D features
-        10,000 scenes (1,000 LiDAR-captured real scenes and 9,000 synthetic scenes built from over 100
-        designer-curated templates), 95,962 rooms, and 299,073 viewpoints. It provides sparse unordered
-        panoramic image sets that reflect practical acquisition, in which a suboptimal reference view can
-        degrade reconstruction robustness.</p>
-      <p>Argus addresses this issue with <b>covisibility learning</b> to select a reliable reference view for
-        anchoring the metric global coordinate system. We further factorize the pixel-to-world mapping into
-        explicit geometric transforms with per-step supervision, and enforce joint constraints via composing
-        cross-coordinate-frame transforms. This approach improves geometric consistency, simplifies learning,
-        and reinforces mutual facilitation among subtasks. To evaluate these designs, we establish a panoramic
-        visual geometry benchmark on Realsee3D for camera pose estimation, depth estimation, and point cloud
-        reconstruction, where Argus achieves <b>state-of-the-art</b> results across all tasks.</p>
+      <p>Metric feed-forward 3D reconstruction for panoramic data remains under-explored due to the lack of
+        large-scale panoramic RGB-D training data. We present <b>Realsee3D</b>, a hybrid dataset of 10K indoor
+        scenes (1K real, 9K synthetic) with 299K panoramic viewpoints and precise metric annotations, and
+        <b>Argus</b>, a feed-forward network trained on it for metric panoramic 3D reconstruction. In the sparse
+        unordered capture setting of Realsee3D, a poorly chosen coordinate anchor can cause global pose drift.</p>
+      <p>Argus addresses this with a learned <b>covisibility module</b> that selects the geometrically optimal
+        reference view to anchor the metric world frame. To further improve multi-task learning, we decompose the
+        bidirectional pixel-to-world mapping into interpretable sub-steps with per-step supervision and
+        cross-coordinate joint constraints, reinforcing geometric consistency across prediction branches. On the
+        Realsee3D benchmark, Argus achieves <b>state-of-the-art</b> metric performance in camera pose estimation,
+        depth estimation, and point cloud reconstruction.</p>
     </div>
   </section>
 
@@ -94,7 +92,7 @@
         <p>The core idea is to <b>explicitly factorize</b> the bidirectional pixel-to-world transform into several
           interpretable intermediate geometric representations, supervising each sub-step individually and enforcing
           joint pose constraints across coordinate frames. This lowers optimization difficulty and strengthens
-          multi-task synergy. The model (~1.31B parameters) outputs native metric scale without post-hoc alignment.</p>
+          multi-task synergy. The model outputs native metric scale without post-hoc alignment.</p>
       </div>
       <div class="figure">
         <img src="./static/images/network.png" alt="Argus network architecture">
@@ -118,7 +116,7 @@
         <div class="stat"><div class="num">10,000</div><div class="lbl">Scenes<br>(1K real + 9K synthetic)</div></div>
         <div class="stat"><div class="num">95,962</div><div class="lbl">Rooms</div></div>
         <div class="stat"><div class="num">299,073</div><div class="lbl">Viewpoints</div></div>
-        <div class="stat"><div class="num">100+</div><div class="lbl">Designer templates</div></div>
+        <div class="stat"><div class="num">RGB-D</div><div class="lbl">+ metric pose<br>annotations</div></div>
       </div>
       <div class="figure">
         <img src="./static/images/realsee3d_overview.png" alt="Realsee3D dataset overview">
@@ -148,6 +146,11 @@
       <div class="figure">
         <img src="./static/images/vis.png" alt="Generalization visualization">
         <p class="caption"><b>Generalization.</b> Reconstruction results on diverse indoor scenes.</p>
+      </div>
+      <div class="figure">
+        <img src="./static/images/other_pano.png" alt="Zero-shot reconstruction on unseen datasets">
+        <p class="caption"><b>Zero-shot reconstruction.</b> Argus generalizes to unseen panoramic datasets it was
+          never trained on.</p>
       </div>
       <div class="figure">
         <img src="./static/images/native_comp.png" alt="Perspective vs panoramic reconstruction">

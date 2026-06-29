@@ -3,7 +3,7 @@
 This branch (`gh-pages`) hosts the static project page for
 **Argus: Metric Panoramic 3D Reconstruction for Indoor Scenes**.
 
-Live site: https://realsee-developer.github.io/Argus/
+Live site: https://argus-paper.realsee.ai/
 
 ## Structure
 ```
@@ -12,6 +12,7 @@ static/css/index.css    # styles
 static/js/index.js      # BibTeX copy button
 static/images/*.png     # figures exported from the paper
 .nojekyll               # disable Jekyll processing
+CNAME                   # custom domain: argus-paper.realsee.ai
 ```
 
 ## Local preview
