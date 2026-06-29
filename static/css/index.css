@@ -14,15 +14,15 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; font-size: 17.5px; }
 
 body {
   margin: 0;
   font-family: var(--serif);
   color: var(--text);
   background: var(--bg);
-  line-height: 1.65;
-  font-size: 17px;
+  line-height: 1.7;
+  font-size: 1rem;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -236,7 +236,7 @@ footer a { color: var(--accent); }
 @media (max-width: 760px) {
   .title { font-size: 1.9rem; }
   .subtitle { font-size: 1.02rem; }
-  body { font-size: 16px; }
+  body { font-size: 17px; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   section { padding: 40px 0; }
   .prose p { text-align: left; }
