@@ -150,6 +150,37 @@
     </div>
   </section>
 
+  <!-- ===== Interactive Demo ===== -->
+  <section id="demo">
+    <div class="container">
+      <h2 class="section-title">Interactive Reconstruction</h2>
+      <p class="prose demo-intro">From a sparse set of panoramic views, Argus reconstructs a complete, metric-scale
+        3D point cloud in a single feed-forward pass. Pick a scene, then <b>drag to rotate</b>, scroll to zoom, and
+        right-drag to pan the live reconstruction below.</p>
+
+      <div class="demo-tabs" id="demoTabs"></div>
+
+      <div class="demo-stage">
+        <div class="demo-side">
+          <div class="demo-side-label">Input panoramic views</div>
+          <div class="demo-inputs" id="demoInputs"></div>
+        </div>
+        <div class="viewer-wrap">
+          <div class="viewer-canvas" id="viewerCanvas"></div>
+          <div class="viewer-loading" id="viewerLoading">Loading 3D model&hellip;</div>
+          <div class="viewer-hint">Drag&nbsp;·&nbsp;rotate &nbsp; Scroll&nbsp;·&nbsp;zoom &nbsp; Right-drag&nbsp;·&nbsp;pan</div>
+          <div class="viewer-controls">
+            <button id="vReset" class="vbtn">Reset view</button>
+            <button id="vRotate" class="vbtn">Pause rotation</button>
+            <label class="vlabel">Point size
+              <input id="vPoint" type="range" min="0.6" max="4" step="0.1" value="1.9">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== BibTeX ===== -->
   <section id="citation" class="bibtex">
     <div class="container">
@@ -182,5 +213,14 @@
   </footer>
 
   <script src="./static/js/index.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="./static/js/viewer.js"></script>
 </body>
 </html>
