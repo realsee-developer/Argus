@@ -115,7 +115,8 @@ a:hover { color: var(--accent-dark); text-decoration: underline; }
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0,0,0,.14);
 }
-.btn .ico { font-size: 1.05rem; line-height: 1; }
+.btn .ico { display: inline-flex; align-items: center; }
+.btn .ico svg { width: 17px; height: 17px; display: block; stroke: currentColor; fill: none; }
 .btn.disabled {
   background: #e9ecf1;
   color: #9aa3ad;
