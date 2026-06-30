@@ -4,9 +4,14 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // ---- Demo metadata ----
 const DEMOS = [
-  { id: 'scene1', label: '2 views',  count: 2  },
-  { id: 'scene2', label: '4 views',  count: 4  },
-  { id: 'scene3', label: '13 views', count: 13 },
+  { id: 'real_factory',     label: 'Real · Factory',     count: 4  },
+  { id: 'real_indoor',      label: 'Real · Indoor',      count: 18 },
+  { id: 'synthetic_indoor', label: 'Synthetic · Indoor', count: 39 },
+  { id: 'weak_covis',       label: 'Weak Covisibility',  count: 2  },
+  { id: 'curve_wall',       label: 'Curved Wall',        count: 1  },
+  { id: 'cartoon',          label: 'Cartoon',            count: 1  },
+  { id: 'ink_wash',         label: 'Ink Wash',           count: 1  },
+  { id: 'animate',          label: 'Animation',          count: 1  },
 ];
 const base = './static/demos';
 const demoData = DEMOS.map(d => ({
