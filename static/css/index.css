@@ -42,6 +42,12 @@ a:hover { color: var(--accent-dark); text-decoration: underline; }
   border-bottom: 1px solid var(--border);
   background: linear-gradient(180deg, var(--bg-soft) 0%, #ffffff 100%);
 }
+.hero-logo {
+  display: block;
+  height: 80px;
+  width: auto;
+  margin: 0 auto 20px;
+}
 .venue-badge {
   display: inline-block;
   font-size: 0.85rem;
