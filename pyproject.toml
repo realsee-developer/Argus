@@ -1,0 +1,21 @@
+[project]
+name = "argus"
+version = "0.0.1"
+requires-python = ">= 3.10"
+authors = [{name = "Xi Li", email = "xi-li@foxmail.com"}]
+dependencies = [
+    "numpy",
+    "Pillow",
+    "huggingface_hub",
+    "einops",
+    "safetensors",
+    "opencv-python",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["argus*"]

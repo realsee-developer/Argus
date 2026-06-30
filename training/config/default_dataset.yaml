@@ -1,0 +1,83 @@
+# Template for the dataset config
+data:
+  train:
+    _target_: data.dynamic_dataloader.DynamicTorchDataset
+    num_workers: 8
+    max_img_per_gpu: 56
+    # Shuffling in PyTorch DataLoader can sometimes copy large dicts and exceed CPU memory
+    # (see: https://github.com/pytorch/pytorch/issues/13246).
+    # To avoid this, set shuffle=False and enable common_config.inside_random=True instead.
+    shuffle: True
+    pin_memory: False
+    common_config:  # common config for evaluation
+      fix_img_num: -1 # -1 means do not fix the number of images
+      fix_aspect_ratio: 1.0
+      training: True
+      inside_random: True
+      img_size: 224
+      patch_size: 14
+      rescale: True
+      rescale_aug: True
+      landscape_check: False
+      debug: False
+      get_nearby: True
+      load_depth: True
+      img_nums: [2, 28]
+      max_img_per_gpu: 56
+      allow_duplicate_img: True
+      repeat_batch: False
+      pano_crop: True
+      pano_crop_ratio: 0.15 # Discard 15% of the top and bottom of the panoramic image
+      pano_rotate: True # Horizontal random rotation panoramic image
+      load_covis: True # Load covisibility graph
+
+      augs:
+        cojitter: True
+        cojitter_ratio: 0.3
+        scales: null
+        aspects: [1.0, 1.0]
+        color_jitter:
+          brightness: 0.5
+          contrast: 0.5
+          saturation: 0.5
+          hue: 0.1
+          p: 0.9
+        gray_scale: True
+        gau_blur: False
+  val:
+    _target_: data.dynamic_dataloader.DynamicTorchDataset
+    num_workers: 8
+    max_img_per_gpu: 56
+    # Shuffling in PyTorch DataLoader can sometimes copy large dicts and exceed CPU memory
+    # (see: https://github.com/pytorch/pytorch/issues/13246).
+    # To avoid this, set shuffle=False and enable common_config.inside_random=True instead.
+    shuffle: True
+    pin_memory: False
+    common_config:  # common config for evaluation
+      fix_img_num: -1 # -1 means do not fix the number of images
+      fix_aspect_ratio: 1.0
+      training: False
+      inside_random: True
+      img_size: 224
+      patch_size: 14
+      rescale: True
+      rescale_aug: False
+      landscape_check: False
+      debug: False
+      get_nearby: True
+      load_depth: True
+      img_nums: [2, 12]
+      allow_duplicate_img: True
+      pano_crop: True
+      pano_crop_ratio: 0.15
+      pano_rotate: True
+      load_covis: True
+
+      augs:
+        cojitter: False
+        cojitter_ratio: 0.5
+        scales: null
+        aspects: [1.0, 1.0]
+        color_jitter: null
+        gray_scale: False
+        gau_blur: False
