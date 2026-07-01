@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://argus-paper.realsee.ai/sitemap.xml
