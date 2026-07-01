@@ -9,7 +9,7 @@
 <a href="https://argus-paper.realsee.ai" target="_blank"><img src="https://img.shields.io/badge/Project_Page-green" alt="Project Page"></a>
 <a href="https://arxiv.org/abs/2606.30047" target="_blank"><img src="https://img.shields.io/badge/arXiv-2606.30047-b31b1b" alt="arXiv"></a>
 <a href="https://huggingface.co/RealseeTechnology/argus-realsee3d" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-yellow" alt="HuggingFace Model"></a>
-<a href="https://huggingface.co/spaces/RealseeTechnology/Argus" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-blue" alt="HuggingFace Demo"></a>
+<a href="https://huggingface.co/spaces/RealseeDeveloper/Argus" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-blue" alt="HuggingFace Demo"></a>
 <a href="https://github.com/realsee-developer/RealSee3D" target="_blank"><img src="https://img.shields.io/badge/RealSee3D-Dataset-orange" alt="RealSee3D Dataset"></a>
 
 
