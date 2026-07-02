@@ -91,6 +91,14 @@ a:hover { color: var(--accent-dark); text-decoration: underline; }
   margin: 4px 0 6px;
 }
 .affiliations sup { color: var(--accent); }
+.corresponding {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 2px 0 6px;
+}
+.corresponding sup { color: var(--accent); }
+.corresponding a { color: var(--accent); text-decoration: none; }
+.corresponding a:hover { text-decoration: underline; }
 .note { color: var(--muted); font-size: 0.92rem; margin-top: 8px; }
 
 /* link buttons */
