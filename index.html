@@ -26,6 +26,115 @@
   <link rel="apple-touch-icon" href="./static/images/apple-touch-icon.png">
 
   <link rel="stylesheet" href="./static/css/index.css">
+  <script>
+    (function () {
+      var measurementId = "G-GLTGD29RWX";
+      var linkedDomains = ["argus.realsee.ai", "argus-paper.realsee.ai", "dataset.realsee.ai", "h5.realsee.ai"];
+
+      if (!linkedDomains.includes(window.location.hostname)) return;
+
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+      window.gtag("set", "linker", { domains: linkedDomains });
+      window.gtag("js", new Date());
+      window.gtag("config", measurementId);
+
+      var gtagScript = document.createElement("script");
+      gtagScript.async = true;
+      gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(measurementId);
+      document.head.appendChild(gtagScript);
+
+      function findSectionId(element) {
+        var section = element.closest("section[id], header, footer");
+        if (!section) return "global";
+        if (section.id) return section.id;
+        return section.tagName.toLowerCase();
+      }
+
+      function trackPaperEvent(name, params) {
+        if (typeof window.gtag !== "function") return;
+        window.gtag("event", name, Object.assign({ source_site: "argus_paper_site" }, params));
+      }
+
+      function safeLinkUrl(url) {
+        return url.protocol === "mailto:" ? "mailto:" : url.origin + url.pathname;
+      }
+
+      function safeLinkPath(url) {
+        return url.protocol === "mailto:" ? "" : url.pathname;
+      }
+
+      document.addEventListener("click", function (event) {
+        if (!(event.target instanceof Element)) return;
+
+        var link = event.target.closest("a[href]");
+        if (link) {
+          var url = new URL(link.href, window.location.href);
+          var params = {
+            link_url: safeLinkUrl(url),
+            link_domain: url.hostname,
+            link_path: safeLinkPath(url),
+            link_text: (link.textContent || "").trim().slice(0, 100),
+            section_id: findSectionId(link),
+          };
+
+          trackPaperEvent("argus_paper_link_click", params);
+
+          if (url.hash && url.origin === window.location.origin) {
+            trackPaperEvent("argus_paper_section_jump", Object.assign({}, params, { target_section: url.hash.slice(1) }));
+          }
+
+          if (url.origin !== window.location.origin && url.protocol !== "mailto:") {
+            trackPaperEvent("argus_paper_outbound_click", params);
+          }
+
+          if (linkedDomains.includes(url.hostname) && url.hostname !== window.location.hostname) {
+            trackPaperEvent("argus_cross_site_click", params);
+          }
+
+          return;
+        }
+
+        var button = event.target.closest("button[id]");
+        if (!button) return;
+
+        trackPaperEvent("argus_paper_button_click", {
+          button_id: button.id,
+          button_text: (button.textContent || "").trim().slice(0, 100),
+          section_id: findSectionId(button),
+        });
+      });
+
+      document.addEventListener("change", function (event) {
+        var input = event.target;
+        if (!(input instanceof HTMLInputElement) || input.id !== "vPoint") return;
+
+        trackPaperEvent("argus_paper_demo_control", {
+          control_id: input.id,
+          control_value: input.value,
+          section_id: findSectionId(input),
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        if (!("IntersectionObserver" in window)) return;
+
+        var seenSections = new Set();
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            var id = entry.target.id || entry.target.tagName.toLowerCase();
+            if (!entry.isIntersecting || seenSections.has(id)) return;
+            seenSections.add(id);
+            trackPaperEvent("argus_paper_section_view", { section_id: id });
+          });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll("header, section[id], footer").forEach(function (section) {
+          observer.observe(section);
+        });
+      });
+    })();
+  </script>
 </head>
 <body>
 
