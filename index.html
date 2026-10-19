@@ -174,6 +174,22 @@
     </div>
   </header>
 
+  <!-- ===== Hosted commercial API ===== -->
+  <section id="hosted-api">
+    <div class="container prose">
+      <h2 class="section-title">Hosted commercial API</h2>
+      <p>For managed integrations, the separately hosted Argus API accepts a batch of <strong>multiple 2:1 equirectangular panoramas</strong> or <strong>multiple 1:1 pinhole images</strong> in one input ZIP. Choose one image type for the batch; do not mix the two types.</p>
+      <p>This service has its own API contract. The research code and pretrained weights described on this page retain their documented capabilities and license terms; hosted pinhole support does not imply support in the published weights.</p>
+      <ol>
+        <li>Request temporary upload credentials with <code>GET /open/v1/argus/file/token</code>, upload the input ZIP under the permitted prefix, and retain its full object path.</li>
+        <li>Submit <code>POST /open/v1/argus/task/submit</code> with the object path in <code>private_cos_keys</code> and a nonempty <code>title</code>. Save <code>data.task_code</code>.</li>
+        <li>Query <code>GET /open/v1/argus/task/info?task_code=...</code>. Check the gateway result and task status, then download <code>output.zip</code> from <code>data.output_url</code> before <code>data.expiration_timestamp</code>.</li>
+      </ol>
+      <p>Validate the downloaded <code>output.json</code> manifest, including partial or failed results, before consuming EXR depth maps, the merged GLB point cloud, camera poses, and optional intrinsics. Keep app secrets and gateway tokens on your backend, and confirm an uncertain submission outcome before retrying.</p>
+      <p><a href="https://developer.realsee.ai/docs/argus/quickstart">Hosted API Quickstart</a> &middot; <a href="https://developer.realsee.ai/docs/argus/reference">API reference</a> &middot; <a href="https://developer.realsee.ai/docs/argus/outputs">Outputs and result handling</a></p>
+    </div>
+  </section>
+
   <!-- ===== Teaser ===== -->
   <section class="teaser" style="border-bottom:1px solid var(--border);">
     <div class="container">
