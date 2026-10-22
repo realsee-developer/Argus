@@ -16,6 +16,22 @@
 <p><b><a href="https://www.realsee.ai">Realsee</a></b></p>
 </div>
 
+## Hosted commercial API
+
+For a managed integration, Realsee provides a separate hosted Argus API. It accepts a batch of **multiple 2:1 equirectangular panoramas** or **multiple 1:1 pinhole images**, packaged in one ZIP. Use one image type throughout the batch; do not mix panoramas and pinhole images.
+
+The hosted API contract is separate from the research implementation below. The published code and pretrained weights retain their documented capabilities and license terms; this API does not imply that those weights support pinhole input.
+
+1. Package the selected image batch into one input ZIP.
+2. Request temporary upload credentials with `GET /open/v1/argus/file/token`, upload the ZIP under the permitted prefix, and retain its full object path.
+3. Call `POST /open/v1/argus/task/submit` with that object path in `private_cos_keys` and a nonempty `title`. Save the returned `data.task_code`.
+4. Query `GET /open/v1/argus/task/info?task_code=...`. Check both the gateway business result and task status before retrieving the result.
+5. When the task succeeds, download the `output.zip` referenced by `data.output_url` before `data.expiration_timestamp`. Validate its `output.json` manifest, including partial or failed results, before consuming EXR depth maps, the merged GLB point cloud, camera poses, and optional intrinsics.
+
+Keep app secrets and gateway access tokens on your backend. Task submission is not idempotent; confirm an uncertain submission outcome before retrying.
+
+See the [hosted API Quickstart](https://developer.realsee.ai/docs/argus/quickstart), [API reference](https://developer.realsee.ai/docs/argus/reference), and [outputs and result handling](https://developer.realsee.ai/docs/argus/outputs) for the maintained integration contract.
+
 ## Quick Start
 
 Clone the repository and install dependencies:
